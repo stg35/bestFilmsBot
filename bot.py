@@ -8,7 +8,7 @@ bot = telebot.TeleBot(secret_data.telegram_api_token)
 @bot.message_handler(commands=['start'])
 def handler_quiz(message):
     print(message)
-    bot.send_message(message.chat.id, messages['start'], reply_markup=markups['start_markup'])
+    bot.send_message(message.chat.id, messages['start'].format(username=message.from_user.username), reply_markup=markups['start_markup'])
 
 @bot.message_handler(func=lambda msg: msg.text == buttons['search_film'])
 def searching1(message):
@@ -19,7 +19,10 @@ def searching1(message):
 def message_handler(message):
      if booleans['isSearchButton']:
         film_data = search_film(message.text)
-        bot.send_photo(message.chat.id, film_data['posterURL'], caption=film_data['name'])
+        print(film_data)
+        bot.send_photo(message.chat.id, film_data['posterURL'], caption=messages['caption_text'].format(
+            name=film_data['name'], year=film_data['year'], description=film_data['description'],
+            rating=film_data['rating']))
         booleans['isSearchButton'] = False
 
 if __name__ == '__main__':
