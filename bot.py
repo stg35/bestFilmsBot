@@ -4,6 +4,8 @@ from constants import messages, buttons, markups, booleans
 from api import search_film
 
 bot = telebot.TeleBot(secret_data.telegram_api_token)
+counter = 0
+film_name = ''
 
 @bot.message_handler(commands=['start'])
 def handler_quiz(message):
@@ -17,13 +19,23 @@ def searching1(message):
 
 @bot.message_handler(content_types=['text'])
 def message_handler(message):
-     if booleans['isSearchButton']:
-        film_data = search_film(message.text)
+    global counter
+    global film_name
+    if message.text == buttons['stop']:
+        booleans['isSearchButton'] = False
+        counter = 0
+        film_name = ''
+    if booleans['isSearchButton']:
+        if counter == 0:
+            film_name = message.text
+            film_data = search_film(film_name)
+        else:
+            film_data = search_film(film_name, counter)
         print(film_data)
         bot.send_photo(message.chat.id, film_data['posterURL'], caption=messages['caption_text'].format(
             name=film_data['name'], year=film_data['year'], description=film_data['description'],
-            rating=film_data['rating']))
-        booleans['isSearchButton'] = False
+            rating=film_data['rating']), reply_markup=markups['searching_markup'])
+        counter+=1
 
 if __name__ == '__main__':
     bot.polling(none_stop=True, interval=0)
