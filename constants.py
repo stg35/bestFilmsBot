@@ -6,7 +6,8 @@ messages = {
      'start': 'Рады вас видеть, {username}!\n\n' +
               'Что вас сегодня интересует?',
      'input_film': 'Введите фильм, который хотите найти.',
-     'caption_text': '🎬{name}({year})🎬\n' + '{description}\n' + 'Рейтинг: {rating}/10'
+     'caption_text': '🎬{name}({year})🎬\n' + '{description}\n' + 'Рейтинг: {rating}/10',
+     'main': 'Что-нибудь ещё?'
 }
 
 buttons = {
@@ -37,7 +38,7 @@ searching_markup = telebot.types.ReplyKeyboardMarkup(True)
 searching_markup.row(buttons['stop'], buttons['next'])
 
 markups = {
-    'start_markup': start_markup,
+    'main_markup': start_markup,
     'genres_markup': genres_markup,
     'searching_markup': searching_markup
 }

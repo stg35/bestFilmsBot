@@ -10,7 +10,7 @@ film_name = ''
 @bot.message_handler(commands=['start'])
 def handler_quiz(message):
     print(message)
-    bot.send_message(message.chat.id, messages['start'].format(username=message.from_user.username), reply_markup=markups['start_markup'])
+    bot.send_message(message.chat.id, messages['start'].format(username=message.from_user.username), reply_markup=markups['main_markup'])
 
 @bot.message_handler(func=lambda msg: msg.text == buttons['search_film'])
 def searching1(message):
@@ -25,6 +25,7 @@ def message_handler(message):
         booleans['isSearchButton'] = False
         counter = 0
         film_name = ''
+        bot.send_message(message.chat.id, messages['main'], reply_markup=markups['main_markup'])
     if booleans['isSearchButton']:
         if counter == 0:
             film_name = message.text
