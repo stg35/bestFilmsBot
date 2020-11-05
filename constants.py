@@ -1,13 +1,13 @@
 import telebot
 
-counter = 0
-
 messages = {
      'start': 'Рады вас видеть, {username}!\n\n' +
               'Что вас сегодня интересует?',
      'input_film': 'Введите фильм, который хотите найти.',
      'caption_text': '🎬{name}({year})🎬\n' + '{description}\n' + 'Рейтинг: {rating}/10',
-     'main': 'Что-нибудь ещё?'
+     'main': 'Что-нибудь ещё?',
+     'this_film': 'Этот фильм?',
+     'none_wishlist': 'Ваш список пуст.'
 }
 
 buttons = {
@@ -15,7 +15,7 @@ buttons = {
           'комедия', 'криминал', 'мультфильм', 'приключения', 'семейный', 'триллер', 'ужасы',
           'фантастика', 'фэнтези'],
     'quiz': '📝Пройти опрос',
-    'new': '🌠Новинки',
+    'new': '🌠Новинки в интернете',
     'classic': '🏛Классика',
     'wish_list': '📜Вишлист',
     'recommend_film': '🎬Подобрать фильм',
@@ -37,13 +37,19 @@ for i in range(0, len(buttons['genres'])//3):
 searching_markup = telebot.types.ReplyKeyboardMarkup(True)
 searching_markup.row(buttons['stop'], buttons['next'])
 
+inline_keyboard = telebot.types.InlineKeyboardMarkup()
+add_button = telebot.types.InlineKeyboardButton(text='➕Добавить', callback_data='add')
+dislike_button = telebot.types.InlineKeyboardButton(text='👎Не интересно', callback_data='dislike')
+inline_keyboard.add(add_button, dislike_button)
+
 markups = {
     'main_markup': start_markup,
     'genres_markup': genres_markup,
-    'searching_markup': searching_markup
+    'searching_markup': searching_markup,
+    'under_markup': inline_keyboard
 }
 
 booleans = {
-    'isSearchButton': False
+    'isSearchButton': False,
+    'isNewButton': False
 }
-
