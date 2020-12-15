@@ -21,5 +21,13 @@ def addMovieToWishlist(userId, movieId):
         array.append(movieId)
         db['users'].update_one({'_id': userId}, {'$set': {'wishlist': array}})
 
+def addMovieToBlacklist(userId, movieId):
+    if not db['users'].find_one({'_id': userId})['blacklist']:
+        db['users'].update_one({'_id': userId}, {'$set': {'blacklist': [movieId]}})
+    elif movieId not in db['users'].find_one({'_id': userId})['blacklist']:
+        array = db['users'].find_one({'_id': userId})['blacklist']
+        array.append(movieId)
+        db['users'].update_one({'_id': userId}, {'$set': {'blacklist': array}})
+
 def viewWishlist(userId):
     return db['users'].find_one({'_id': userId})['wishlist']

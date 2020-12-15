@@ -29,34 +29,32 @@ def search_film(keyword, k=0):
     return film_data
 
 def view_newFilms(month):
+    films = []
     request = requests.get('https://kinopoiskapiunofficial.tech/api/v2.1/films/releases?year=2020&month={0}&page={1}'.format(month, 1),
                   headers={'X-API-KEY':'2ff08927-e551-4477-a286-2dc5e81c8477'})
     response = request.json()
     for film in response['releases']:
         if film['year'] == 2020:
             id = film['filmId']
-            break
-
-
-    request_film_data = requests.get(
-        'https://kinopoiskapiunofficial.tech/api/v2.1/films/{id}?append_to_response=RATING'.format(
-            id=id),
-        headers={'X-API-KEY': secret_data.film_api_token})
-    response_film_data = request_film_data.json()
-    genres = []
-    for genre in response_film_data['data']['genres']:
-        genres.append(genre['genre'])
-    film_data = {
-        'name': response_film_data['data']['nameRu'],
-        'year': response_film_data['data']['year'],
-        'description': response_film_data['data']['description'],
-        'genres': genres,
-        'country': response_film_data['data']['countries'][0]['country'],
-        'rating': response_film_data['rating']['rating'],
-        'posterURL': response_film_data['data']['posterUrlPreview']
-    }
-
-    return film_data
+            request_film_data = requests.get(
+            'https://kinopoiskapiunofficial.tech/api/v2.1/films/{id}?append_to_response=RATING'.format(
+                id=id),
+            headers={'X-API-KEY': secret_data.film_api_token})
+            response_film_data = request_film_data.json()
+            genres = []
+            for genre in response_film_data['data']['genres']:
+                genres.append(genre['genre'])
+            film_data = {
+                'name': response_film_data['data']['nameRu'],
+                'year': response_film_data['data']['year'],
+                'description': response_film_data['data']['description'],
+                'genres': genres,
+                'country': response_film_data['data']['countries'][0]['country'],
+                'rating': response_film_data['rating']['rating'],
+                'posterURL': response_film_data['data']['posterUrlPreview']
+            }
+            films.append(film_data)
+    return films
 
 def getNameOfFilm(filmId):
     request_film_data = requests.get(
