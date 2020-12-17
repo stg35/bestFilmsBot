@@ -63,3 +63,27 @@ def getNameOfFilm(filmId):
         headers={'X-API-KEY': secret_data.film_api_token})
     response_film_data = request_film_data.json()
     return response_film_data['data']['nameRu']
+
+def getFilmByID(filmID):
+    request_film_data = requests.get(
+        'https://kinopoiskapiunofficial.tech/api/v2.1/films/{id}?append_to_response=RATING'.format(
+            id=filmID),
+        headers={'X-API-KEY': secret_data.film_api_token})
+    response_film_data = request_film_data.json()
+    try:
+        genres = []
+        for genre in response_film_data['data']['genres']:
+            genres.append(genre['genre'])
+        film_data = {
+            'filmId': response_film_data['data']['filmId'],
+            'name': response_film_data['data']['nameRu'],
+            'year': response_film_data['data']['year'],
+            'description': response_film_data['data']['description'],
+            'genres': genres,
+            'country': response_film_data['data']['countries'][0]['country'],
+            'rating': response_film_data['rating']['rating'],
+            'posterURL': response_film_data['data']['posterUrlPreview']
+        }
+    except:
+        return False
+    return film_data

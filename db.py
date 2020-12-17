@@ -31,3 +31,9 @@ def addMovieToBlacklist(userId, movieId):
 
 def viewWishlist(userId):
     return db['users'].find_one({'_id': userId})['wishlist']
+
+def getSelection(id):
+    return {
+        'selection_name': db['selections'].find_one({'_id': id})['name'],
+        'selection_films': db['selections'].find_one({'_id': id})['films']
+    }
